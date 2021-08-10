@@ -14,17 +14,24 @@ namespace MilkAndCookies.Controllers
         [HttpGet]
         public IEnumerable<Product> Get(string name, double price)
         {
+            // Convert parameters into Product object
             Product p = new Product(name, price);
+            // Create a list of products 
             List<Product> products;
+            // Check if the cart is empty
             if (HttpContext.Session.GetString("cart") == null)
             {
-                products = new List<Product>();
+                // return an empty list if the cart is empty
+                return new List<Product>();
             }
             else
             {
+                // Deserialize products from the cart
                 products = HttpContext.Session.GetObjectFromJson<List<Product>>("cart");
             }
+            // Add the new product to the list
             products.Add(p);
+            // Overwrite the session, so the new object is included.
             HttpContext.Session.SetObjectAsJson("cart", products);
             return products;
         }
