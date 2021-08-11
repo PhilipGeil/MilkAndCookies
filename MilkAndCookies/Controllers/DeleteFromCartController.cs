@@ -23,14 +23,22 @@ namespace MilkAndCookies.Controllers
             {
                 // If empty we just return an empty list.
                 return new List<Product>();
-            } else
+            }
+            else
             {
                 // Deserialize cart to object
                 products = HttpContext.Session.GetObjectFromJson<List<Product>>("cart");
-                products.Remove(p);
+                for (int i = 0; i < products.Count; i++)
+                {
+                    if (products[i].Name == p.Name && products[i].Price == p.Price)
+                    {
+                        products.RemoveAt(i);
+                        // Overwrite old session
+                        HttpContext.Session.SetObjectAsJson("cart", products);
+                        return products;
+                    }
+                }
             }
-            // Overwrite old session
-            HttpContext.Session.SetObjectAsJson("cart", products);
             return products;
         }
     }

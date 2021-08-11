@@ -22,7 +22,7 @@ namespace MilkAndCookies.Controllers
             if (HttpContext.Session.GetString("cart") == null)
             {
                 // return an empty list if the cart is empty
-                return new List<Product>();
+                products = new List<Product>();
             }
             else
             {
